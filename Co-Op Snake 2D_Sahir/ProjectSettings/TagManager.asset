@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Snake
+  - MassGainer
+  - MassBurner
+  - GreenSnake
+  - BlueSnake
+  - ScoreBuster
+  - SpeedBuster
+  - ScoreMultiplier
+  - Shield
+  - BodyPart
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - BlueSnake
+  - Water
+  - UI
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: BlueSnake
+    uniqueID: 35604435
+    locked: 0
+  - name: New Layer 2
+    uniqueID: 703390795
+    locked: 0
