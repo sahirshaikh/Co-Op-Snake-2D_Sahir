@@ -4,36 +4,26 @@ using UnityEngine;
 
 public class PowerControllerScript : MonoBehaviour
 {
-
-    // public GameObject shield;
-    // public GameObject ScoreMultiplier;
-    // public GameObject SpeedBooster;
-
-    public float PowerUpSpawnTime;
-    public float PowerLifeTime;
-    public float XpositiveSpawanRange;
-    public float XnegativeSpawanRange;
-    public float YpositiveSpawanRange;
-    public float YnegativeSpwanRange;
-    public GameObject[] powerUps;
+    [SerializeField] private float PowerUpSpawnTime;
+    [SerializeField] private float PowerLifeTime;
+    [SerializeField] private float XpositiveSpawanRange;
+    [SerializeField] private float XnegativeSpawanRange;
+    [SerializeField] private float YpositiveSpawanRange;
+    [SerializeField] private float YnegativeSpwanRange;
+    [SerializeField] private GameObject[] powerUps;
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(Spawnpowerroutine());
-        
+        StartCoroutine(Spawnpowerroutine());       
     }
     IEnumerator Spawnpowerroutine()
     {
         while (true)
         {
             int randomIndex = Random.Range(0, powerUps.Length);
-
             spawnIteams(powerUps[randomIndex].gameObject);
             yield return new WaitForSeconds(PowerUpSpawnTime);
-
         }
-
-
     }
 
     void spawnIteams(GameObject gameObject)
@@ -41,8 +31,4 @@ public class PowerControllerScript : MonoBehaviour
         GameObject Object = Instantiate(gameObject);
         Destroy(Object,PowerLifeTime);
     }
-
-
-
-
 }

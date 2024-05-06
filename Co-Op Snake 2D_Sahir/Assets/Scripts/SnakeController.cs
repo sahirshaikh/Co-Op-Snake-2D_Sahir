@@ -8,8 +8,8 @@ public class SnakeController : MonoBehaviour
 {
 
     Rigidbody2D rb;
-    public float SnakeSpeed;
-    public float Lastspeed;
+    [SerializeField] private float SnakeSpeed;
+    [SerializeField] private float Lastspeed;
     private Vector2 CurrentDirection;
     private KeyCode[] Snakekeys;
 
@@ -17,27 +17,43 @@ public class SnakeController : MonoBehaviour
 
     //For Adding Bodyparts.......
     private List<Transform> bodyparts;
-    public Transform bodypart;
+    [SerializeField] private Transform bodypart;
     
-    public Sprite SnakeUp;
-    public Sprite SnakeDown;
-    public Sprite SnakeLeft;
-    public Sprite SnakeRight;
+    [SerializeField] private Sprite SnakeUp;
+    [SerializeField] private Sprite SnakeDown;
+    [SerializeField] private Sprite SnakeLeft;
+    [SerializeField] private Sprite SnakeRight;
     private bool canChangeDirection;
-    public ScoreController scoreController;
+    [SerializeField] private ScoreController scoreController;
 
-    public float XpositiveScreenpos;
-    public float XnegativeScreenpos;
-    public float YpositiveScreenpos;
-    public float YnegativeScreenpos;
+    [SerializeField] private float XpositiveScreenpos;
+    [SerializeField] private float XnegativeScreenpos;
+    [SerializeField] private float YpositiveScreenpos;
+    [SerializeField] private float YnegativeScreenpos;
 
 
-    public GameObject GameoverUI;
-    public bool Shieldactive;
-    public bool IsAlive;
-    public float timer;
+    [SerializeField] private GameObject GameoverUI;
+    [SerializeField] private bool Shieldactive;
+    [SerializeField] private bool IsAlive;
+    [SerializeField] private float timer;
 
-    public float SnakeDistance;
+    [SerializeField] private float SnakeDistance;
+    public snaketype[] Snake;
+
+    public class snaketype
+    {
+        public SnakeSprites snakeSprites;
+
+    }
+
+    public enum SnakeSprites{
+        Uphead,
+        Downhead,
+        Lefthead,
+        righthead,
+
+    }
+
 
 
     // Start is called before the first frame update
@@ -76,52 +92,22 @@ public class SnakeController : MonoBehaviour
         }
         Shieldactive = false;
         Lastspeed=SnakeSpeed;
-
-        //startcoroutine
-        // StartCoroutine("Movementtimer");
-
-       
+      
     }
-
-    // public IEnumerator Movementtimer()
-    // {
-    //     while (IsAlive)
-    //     {
-    //         MoveSnake(CurrentDirection);
-    //         yield return new WaitForSeconds(1f);
-    //     }
-
-
-    // }
 
     // Update is called once per frame
     void Update()
     {
-
-
-        // MoveSnake(CurrentDirection);
-        HandleInput();
-
-      
-    }
-
-    public void LateUpdate() {
-
-
-
-        
+      // MoveSnake(CurrentDirection);
+        HandleInput();     
     }
 
     void FixedUpdate()
     {
         if(SnakeSpeed==0)
         return;
-
-
-
         timer+= (SnakeSpeed==0?0:Time.fixedDeltaTime);
 
-        
         if(timer >= 10/SnakeSpeed)
         { 
             for(int i =  bodyparts.Count-1;i>0; i--)
@@ -131,12 +117,6 @@ public class SnakeController : MonoBehaviour
             timer =0;
              MoveSnake(CurrentDirection);
         }
-
-
-
-
-
-        // MoveSnake(CurrentDirection);
 
     }
 
@@ -173,7 +153,6 @@ public class SnakeController : MonoBehaviour
             CurrentDirection = Vector2.left;
             GetComponent<SpriteRenderer>().sprite = SnakeLeft;
             Timedelaydirection() ;
-
         }
 
 
@@ -193,18 +172,8 @@ public class SnakeController : MonoBehaviour
     
     public void MoveSnake(Vector2 direction) 
     {
-        // rb.velocity = direction * SnakeSpeed * Time.fixedDeltaTime;
-        Vector2 position = gameObject.transform.position;
-        
+        Vector2 position = gameObject.transform.position;       
         transform.position += (Vector3)direction * SnakeDistance ;
-        
-
-        
-
-        // this.transform.position = new Vector3(Mathf.Round(this.transform.position.x) + direction.x, 
-        //                                         Mathf.Round(this.transform.position.y)+direction.y,
-        //                                          0.0f);
-        // Vector2 position = gameObject.transform.position;
 
         if (transform.position.x>XpositiveScreenpos)
         {
@@ -225,10 +194,7 @@ public class SnakeController : MonoBehaviour
         {
             position.y=Mathf.Abs(position.y);
             gameObject.transform.position = position;
-        }
-
-
-        
+        }       
     }   
 
 
@@ -241,7 +207,6 @@ public class SnakeController : MonoBehaviour
             SoundManager.Instance.Play(SoundManager.Sounds.Massgainer);
             GrowSnake();
             Destroy(other.gameObject);
-
         }
         else if (other.CompareTag("MassBurner"))
         {
@@ -257,8 +222,6 @@ public class SnakeController : MonoBehaviour
             Shieldactive =true;
             Invoke("DisableShield",5f);
             Destroy(other.gameObject);
-
-
         }
         else if(other.CompareTag("ScoreMultiplier"))
         {
@@ -266,12 +229,9 @@ public class SnakeController : MonoBehaviour
             SoundManager.Instance.Play(SoundManager.Sounds.PowerUps);
             scoreController.ScoreMultiplier();
             Destroy(other.gameObject);
-
-
         }
         else if(other.CompareTag("SpeedBuster"))
         {
-
             Debug.Log("SpeedBuster"); 
             SoundManager.Instance.Play(SoundManager.Sounds.SpeedPowerUps); 
             SnakeSpeed = SnakeSpeed*2;
@@ -292,8 +252,18 @@ public class SnakeController : MonoBehaviour
             }
 
         }
-
-
+        else if(other.CompareTag("GreenSnake"))
+        {
+            if(Shieldactive==false)
+            {
+            Debug.Log("Snake Die");
+            SoundManager.Instance.Play(SoundManager.Sounds.SnakeDeath);
+            SnakeController snakeController = this.gameObject.GetComponent<SnakeController>();
+            snakeController.enabled = false;
+            SnakeSpeed=0;
+            GameoverUI.SetActive(true);
+            }
+        }
     }
 
     public void GrowSnake()
@@ -301,9 +271,6 @@ public class SnakeController : MonoBehaviour
         Transform bodypart = Instantiate(this.bodypart);
         bodypart.position = new Vector2(10f,10f);
         bodyparts.Add(bodypart);
-
-
-
     }
 
     public void DecreaseSnake()
@@ -312,8 +279,7 @@ public class SnakeController : MonoBehaviour
         {
                 Transform lastSegment = bodyparts[bodyparts.Count - 1];
                 bodyparts.Remove(lastSegment);
-                Destroy(lastSegment.gameObject);
-            
+                Destroy(lastSegment.gameObject);           
         }
 
     }
@@ -331,7 +297,6 @@ public class SnakeController : MonoBehaviour
 
     public void PauseSnake()
     {
-
         SnakeSpeed=0f;
     }
 
@@ -339,6 +304,5 @@ public class SnakeController : MonoBehaviour
     {
         SnakeSpeed = Lastspeed ;
     }
-
-    
+   
 }

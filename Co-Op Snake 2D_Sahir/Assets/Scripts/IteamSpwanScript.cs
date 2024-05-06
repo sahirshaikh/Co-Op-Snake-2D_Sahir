@@ -4,37 +4,31 @@ using UnityEngine;
 
 public class IteamSpwanScript : MonoBehaviour
 {
-    public GameObject MassGainer;
-    public GameObject MassBurner;
+    [SerializeField] private GameObject MassGainer;
+    [SerializeField] private GameObject MassBurner;
 
-    public float foodLifeTime;
-    public float foodSpawnTime;
-    public float XpositiveSpawanRange;
-    public float XnegativeSpawanRange;
-    public float YpositiveSpawanRange;
-    public float YnegativeSpwanRange;
+    [SerializeField] private float foodLifeTime;
+    [SerializeField] private float foodSpawnTime;
+    [SerializeField] private float XpositiveSpawanRange;
+    [SerializeField] private float XnegativeSpawanRange;
+    [SerializeField] private float YpositiveSpawanRange;
+    [SerializeField] private float YnegativeSpwanRange;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(SpawnFoodroutine());
-        
+        StartCoroutine(SpawnFoodroutine());        
     }
 
     private IEnumerator SpawnFoodroutine()
     {
         while (true)
-        {
-            
+        {           
         GameObject foodPrefab = Random.value < 0.5f ? MassBurner : MassGainer;
         SpawnFood(foodPrefab);
-
         yield return new WaitForSeconds(foodSpawnTime);
-
         }
-
-
     }
 
     private void SpawnFood(GameObject prefab)
@@ -43,6 +37,4 @@ public class IteamSpwanScript : MonoBehaviour
         GameObject food = Instantiate(prefab, spawnposition, Quaternion.identity);
         Destroy(food,foodLifeTime);
     }
-
-
 }

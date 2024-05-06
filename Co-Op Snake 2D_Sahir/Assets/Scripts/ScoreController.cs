@@ -25,14 +25,11 @@ public class ScoreController : MonoBehaviour
         if(scoremultiplier==true)
         {
             score +=SC*2;
-
         }
         else if(scoremultiplier==false)
         {
             score +=SC;
         }
-        
-
         RefreshUI();
     }
 
@@ -41,7 +38,6 @@ public class ScoreController : MonoBehaviour
         if(scoremultiplier==true)
         {
             score -=SC*2;
-
         }
         else if(scoremultiplier==false)
         {

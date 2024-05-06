@@ -10,10 +10,6 @@ public class SoundManager : MonoBehaviour
 
     public static SoundManager Instance { get { return instance; } }
 
-
-
-
-
     [SerializeField] private AudioSource soundEffect;
     [SerializeField] private AudioSource soundMusic;
     [SerializeField] private bool IsMute = false;

@@ -3,39 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameController : MonoBehaviour
+public class UIController : MonoBehaviour
 {
-    public GameObject PauseUI;
-    public GameObject GameoverUI;
-    public GameObject LobbyUI;
-    public GameObject StartUpUI;
-    public SnakeController snakeController;
+    [SerializeField] private GameObject PauseUI;
+    [SerializeField] private GameObject GameoverUI;
+    [SerializeField] private GameObject LobbyUI;
+    [SerializeField] private GameObject StartUpUI;
+    [SerializeField] private SnakeController snakeController;
 
     void Update()
         {
             if(Input.GetKey(KeyCode.Escape))
             {
                 snakeController.PauseSnake();
-
-                PauseUI.SetActive(true);
-                
+                PauseUI.SetActive(true);                
             }
         }
-
         public void QuitGame()
         {
             SoundManager.Instance.Play(SoundManager.Sounds.onclick);
             Debug.Log("Application Quit");
             Application.Quit();
-
         }
-
         public void ReloadGame()
         {
             SoundManager.Instance.Play(SoundManager.Sounds.onclick);
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
-
         public void ResumeGame()
         {
             snakeController.ResumeSnake();
@@ -43,7 +37,6 @@ public class GameController : MonoBehaviour
             PauseUI.SetActive(false);
 
         }
-
         public void LobbyLoading()
         {
             SoundManager.Instance.Play(SoundManager.Sounds.onclick);
@@ -54,7 +47,6 @@ public class GameController : MonoBehaviour
             SoundManager.Instance.Play(SoundManager.Sounds.onclick);
             LobbyUI.SetActive(true);
             StartUpUI.SetActive(false);
-
         }
 
 }
